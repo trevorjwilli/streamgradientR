@@ -223,7 +223,7 @@ getupdown <- function(points, lines, seglength, idcol = NULL) {
         colnames(newpts) <- NULL
       }
       if(length(morethan) == 0) {
-        newpts <- as.matrix(dists[length(dists),c(1,2,4)])
+        newpts <- as.matrix(dists[nrow(dists),c(1,2,4)])
         colnames(newpts) <- NULL
       }
 
