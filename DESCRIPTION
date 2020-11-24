@@ -1,0 +1,24 @@
+Package: streamgradientR
+Title: Calculates stream gradient using spatial points, lines, and a DEM
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Trevor",
+           family = "Williams",
+           role = c("aut", "cre"),
+           email = "trevorjwilli@gmail.com")
+Description: This package takes a SpatialPointsDataFrame and a SpatialLinesDataFrame
+    and calculates the stream gradient around the points on the line using a user 
+    specified distance.  
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports:
+    dplyr,
+    maptools,
+    methods,
+    rgdal,
+    rgeos,
+    sp
+    
