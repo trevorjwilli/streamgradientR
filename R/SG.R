@@ -244,5 +244,33 @@ getupdown <- function(points, lines, seglength, idcol = NULL) {
   out
 }
 
+#' Calculate gradient between two points on stream
+#'
+#' @param points Data Frame, output from getupdown function or same format as output from getupdown function
+#' @param ras Raster of DEM. Works best if it is in the same projection as original points and lines
+#' shapefiles used to calculate the stationing.
+#' @param fctr Factor to multiply the segment length by. For example, if lengths are in meters and you want
+#' gradient in meters/km fctr must be 0.001
+#'
+#' @details
+#' Calculates the stream gradient of segments on a line delimited by an upstream and downstream point. This
+#' function works best if the points input is directly used from the output of the getupdown function.
+#'
+#' @export
 
+calcgrad <- function(points, ras, fctr) {
+  shp <- sp::SpatialPointsDataFrame(points[,3:4], points, proj4string = sp::CRS(sp::proj4string(ras)))
+  elev <- raster::extract(ras, shp)
 
+  data <- cbind(points, elev)
+  out <- dplyr::select(data, c(1,2,6)) # Select ID column, Type Column, and Elevation column
+  out <- tidyr::spread(out, 2, 3) # Spread so each ID is 1 row
+  cdist <- dplyr::select(data, c(1,2,5)) # Select ID column, Type Column, and Stationing column
+  cdist <- tidyr::spread(cdist, 2,3) # Make new dataframe to calculate segment length
+
+  out$len <- apply(cdist, 1, function(x) {as.numeric(max(x[2:3])) - as.numeric(min(x[2:3]))}) # Calculate segment length
+
+  out$gradient <- apply(out, 1, function(x)
+  {(as.numeric(max(x[2:3])) - as.numeric(min(x[2:3]))) / (as.numeric(x[4])*as.numeric(fctr))})
+  out
+}

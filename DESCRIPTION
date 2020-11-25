@@ -18,7 +18,9 @@ Imports:
     dplyr,
     maptools,
     methods,
+    raster,
     rgdal,
     rgeos,
-    sp
+    sp,
+    tidyr
     
